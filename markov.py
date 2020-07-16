@@ -2,6 +2,8 @@
 
 import sys
 from random import choice
+import os
+import discord
 
 
 def open_and_read_file(filenames):
@@ -64,3 +66,46 @@ text = open_and_read_file(filenames)
 
 # Get a Markov chain
 chains = make_chains(text)
+
+random_text = make_text(chains)
+
+"""********************************************************************"""
+
+client = discord.Client()
+# creates instance of class Client
+# this client is connect to discord
+
+
+@client.event
+# register an event
+# do things in 'callback'
+# callback is function that is called when something happens
+
+#on_ready function called when bot finished logging in and set things up
+async def on_ready():
+
+    print(f'Successfully connected! Logged in as {client.user}')
+
+@client.event
+# on_message called when bot received message
+async def on_message(message):
+
+    if message.author == client.user:
+        # checks if author of message received is same as client.user
+        # check if the message is from ourself
+        return
+
+    if message.content.startswith('hello'):
+        # if message starts with '$hello'
+        
+        await message.channel.send('wassuppppp', random_text)
+        # reply to channel it was used in
+
+client.run(os.environ['DISCORD_TOKEN'])
+# run bot with login token
+
+# run bot in terminal with $python example_bot.py
+
+
+
+# print(random_text)
